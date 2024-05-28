@@ -19,10 +19,12 @@ header {
     border-bottom: 1px solid #ccc;
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    margin-right: 20px;
+.logo img {
+    height: 23px;
+    width: auto;
+    cursor: pointer;
+    margin-top: 3px;
+    margin-right: 10px;
 }
 
 .search-container {
@@ -42,10 +44,9 @@ header {
 
 #search-button {
     padding: 10px 20px;
-    border-radius: 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
+    border-radius: 10px;
+    color: black;
+    background: white;
     cursor: pointer;
 }
 
