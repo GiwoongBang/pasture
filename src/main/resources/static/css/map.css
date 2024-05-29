@@ -106,7 +106,6 @@ header {
     padding: 10px;
     box-sizing: border-box;
     align-self: flex-start;
-    background-color: var(--sidebar-bg-color);
 }
 
 .sidebar ul {
@@ -134,7 +133,6 @@ header {
     height: var(--map-height);
     overflow-y: auto;
     position: relative;
-    border-left: 1px solid var(--border-color);
     background-color: var(--search-results-bg);
 }
 
