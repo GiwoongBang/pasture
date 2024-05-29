@@ -10,12 +10,13 @@
 <body>
 <div class="container">
     <header>
-        <a href="/" class="logo"><img src="/images/pasture_logo.png" alt="PASTURE"></a>
+        <a href="/" class="logo"><img id="logo" src="/images/pasture_logo_dark.png" alt="PASTURE"></a>
         <div class="search-container">
             <input id="search-input" type="text" placeholder="장소 검색..." onkeydown="handleKeyDown(event)">
             <button id="search-button" onclick="search()">SEARCH</button>
         </div>
         <div class="profile-icon" onclick="handleProfileClick()">?</div>
+        <button id="toggle-dark-mode" onclick="toggleDarkMode()">다크 모드</button>
     </header>
     <div class="page-nav">
         <a href="#">랜덤으로 이동 ↖</a>

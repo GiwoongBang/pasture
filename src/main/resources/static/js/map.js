@@ -100,3 +100,19 @@ function hideResultsPanel() {
         <li>인기 장소 5</li>
     `;
 }
+
+function toggleDarkMode() {
+    const body = document.body;
+    const logo = document.querySelector('.logo img');
+    const darkModeButton = document.getElementById('toggle-dark-mode');
+
+    body.classList.toggle('dark-mode');
+
+    if (body.classList.contains('dark-mode')) {
+        logo.src = '/images/pasture_logo_light.png';
+        darkModeButton.textContent = '라이트 모드';
+    } else {
+        logo.src = '/images/pasture_logo_dark.png';
+        darkModeButton.textContent = '다크 모드';
+    }
+}
