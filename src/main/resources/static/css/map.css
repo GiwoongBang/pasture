@@ -7,8 +7,8 @@ body {
 
 .container {
     margin: 0 auto;
-    padding: 0 15%;
-    max-width: 1200px;
+    padding: 0 2%;
+    max-width: 100%;
 }
 
 header {
@@ -17,14 +17,13 @@ header {
     justify-content: space-between;
     padding: 10px 0;
     border-bottom: 1px solid #ccc;
+    gap: 10px;
 }
 
 .logo img {
     height: 23px;
     width: auto;
     cursor: pointer;
-    margin-top: 3px;
-    margin-right: 10px;
 }
 
 .search-container {
@@ -61,12 +60,11 @@ header {
     font-size: 18px;
     color: white;
     cursor: pointer;
-    margin-left: 20px;
 }
 
 .page-nav {
     text-align: right;
-    margin-Top: 25px;
+    margin-top: 25px;
     font-size: 30px;
 }
 
@@ -76,10 +74,71 @@ header {
     cursor: pointer;
 }
 
-#map {
-    height: 70vh;
-    width: 100%;
+.content {
+    display: flex;
     margin-top: 10px;
+}
+
+.sidebar {
+    width: 15%;
+    padding: 10px;
+    box-sizing: border-box;
+    align-self: flex-start;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+.main-content {
+    width: 70%;
+    height: 80vh;
+    position: relative;
+}
+
+.search-results {
+    width: 15%;
+    padding: 10px;
+    box-sizing: border-box;
+    height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    border-left: 1px solid #ccc;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+#results-panel h3 {
+    margin: 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+#results-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#results-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+#results-list li:last-child {
+    border-bottom: none;
 }
 
 @media (max-width: 768px) {
@@ -87,7 +146,19 @@ header {
         padding: 0 5%;
     }
 
+    .search-container {
+        width: 100%;
+    }
+
     #search-input {
         width: 200px;
+    }
+
+    .sidebar, .search-results {
+        width: 100%;
+    }
+
+    .main-content {
+        width: 100%;
     }
 }

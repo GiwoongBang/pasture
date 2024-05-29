@@ -4,95 +4,50 @@
 <head>
     <title>PASTURE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/css/map.css}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/map.css">
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <a href="/" class="logo"><img src="/images/pasture_logo.png" alt="PASTURE"></a>
-            <div class="search-container">
-                <input id="search-input" type="text" placeholder="Search..." onkeydown="handleKeyDown(event)">
-                <button id="search-button" onclick="search()">SEARCH</button>
-            </div>
-            <div class="profile-icon" onclick="handleProfileClick()">?</div>
-        </header>
-        <div class="page-nav">
-            <a href="#">랜덤으로 이동 ↖</a>
+<div class="container">
+    <header>
+        <a href="/" class="logo"><img src="/images/pasture_logo.png" alt="PASTURE"></a>
+        <div class="search-container">
+            <input id="search-input" type="text" placeholder="장소 검색..." onkeydown="handleKeyDown(event)">
+            <button id="search-button" onclick="search()">SEARCH</button>
         </div>
-        <div id="map"></div>
+        <div class="profile-icon" onclick="handleProfileClick()">?</div>
+    </header>
+    <div class="page-nav">
+        <a href="#">랜덤으로 이동 ↖</a>
     </div>
+    <div class="content">
+        <div class="sidebar">
+            <ul>
+                <li>바로가기 1</li>
+                <li>바로가기 2</li>
+                <li>바로가기 3</li>
+                <li>바로가기 4</li>
+                <li>바로가기 5</li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div id="map"></div>
+        </div>
+        <div class="search-results" id="results-panel">
+            <h3 id="results-title">인기 장소</h3>
+            <ul id="results-list">
+                <li>인기 장소 1</li>
+                <li>인기 장소 2</li>
+                <li>인기 장소 3</li>
+                <li>인기 장소 4</li>
+                <li>인기 장소 5</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-    <script>
-        let map;
-
-        function initMap() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const defaultLocation = { lat: lat, lng: lng };
-                    const defaultZoom = 17;
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: defaultZoom,
-                        center: defaultLocation
-                    });
-                });
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
-        }
-
-        function search() {
-            const searchTerm = document.getElementById('search-input').value;
-            if (!searchTerm) {
-                alert("Please enter a search term");
-                return;
-            }
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const currentLocation = new google.maps.LatLng(lat, lng);
-                    const service = new google.maps.places.PlacesService(map);
-                    const request = {
-                        location: currentLocation,
-                        radius: '500',
-                        query: searchTerm
-                    };
-                    service.textSearch(request, function (results, status) {
-                        if (status === google.maps.places.PlacesServiceStatus.OK) {
-                            map.setCenter(results[0].geometry.location);
-                            for (let i = 0; i < results.length; i++) {
-                                createMarker(map, results[i]);
-                            }
-                        }
-                    });
-                });
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
-        }
-
-        function handleKeyDown(event) {
-            if (event.key === 'Enter') {
-                search();
-            }
-        }
-
-        function createMarker(map, place) {
-            new google.maps.Marker({
-                map: map,
-                position: place.geometry.location,
-                title: place.name
-            });
-        }
-
-        function handleProfileClick() {
-            alert('Profile clicked!');
-        }
-    </script>
-    <script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapKey} + '&libraries=places&callback=initMap'" defer></script>
+<script src="/js/map.js"></script>
+<script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapKey} + '&libraries=places&callback=initMap'" defer></script>
 </body>
 
 </html>
