@@ -2,6 +2,7 @@ import {lightModeStyles, darkModeStyles} from './mapMode.js';
 
 let map;
 let markers = [];
+let searchPerformed = false;
 
 async function loadGoogleMapsApi() {
     return new Promise((resolve) => {
@@ -63,6 +64,7 @@ function search() {
             for (let i = 0; i < results.length; i++) {
                 createMarker(results[i]);
             }
+            searchPerformed = true;
         }
     });
 }
@@ -106,7 +108,13 @@ function showResultsPanel(results) {
     });
 }
 
-function hideResultsPanel() {
+function updateResultsPanel() {
+    if (!searchPerformed) {
+        showPopularPlaces(); // 검색 전이면 인기 장소를 표시
+    }
+}
+
+function showPopularPlaces() {
     const resultsTitle = document.getElementById('results-title');
     resultsTitle.textContent = '인기 장소';
     const resultsList = document.getElementById('results-list');
@@ -140,7 +148,9 @@ function toggleDarkMode() {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('search-button').addEventListener('click', search);
     document.getElementById('search-input').addEventListener('keydown', handleKeyDown);
+    window.addEventListener('beforeunload', () => {searchPerformed = false;});
     // document.getElementById('toggle-dark-mode').addEventListener('click', toggleDarkMode);
 
     initMap();
+    showPopularPlaces();
 });
