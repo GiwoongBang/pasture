@@ -148,6 +148,9 @@ function toggleDarkMode() {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('search-button').addEventListener('click', search);
     document.getElementById('search-input').addEventListener('keydown', handleKeyDown);
+    document.getElementById('contact-link').addEventListener('click', () => {
+        window.open('https://www.naver.com', '_blank');
+    });
     window.addEventListener('beforeunload', () => {searchPerformed = false;});
     // document.getElementById('toggle-dark-mode').addEventListener('click', toggleDarkMode);
 

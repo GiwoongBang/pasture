@@ -124,6 +124,12 @@ header {
     border-bottom: 1px solid var(--border-color);
 }
 
+.sidebar ul li a {
+    display: block;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
 .main-content {
     width: 70%;
     height: var(--map-height);
@@ -192,7 +198,6 @@ header {
     .search-container button {
         text-align: center;
     }
-
 
     .profile-icon {
         display: flex;
