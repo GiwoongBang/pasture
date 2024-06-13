@@ -9,14 +9,15 @@
 
 <body>
 <div class="container">
+
     <header>
-        <a href="/" class="logo"><img id="logo" src="/images/pasture_logo_dark.png" alt="PASTURE"></a>
+        <a href="/" class="logo" id="logo-link"><img id="logo" src="/images/pasture_logo_dark.png" alt="PASTURE"></a>
         <div class="search-container">
-            <input id="search-input" type="text" placeholder="장소 검색..." onkeydown="handleKeyDown(event)">
+            <input id="search-input" type="text" placeholder="장소 검색...">
             <button id="search-button" onclick="search()">SEARCH</button>
         </div>
         <div class="profile-icon" onclick="handleProfileClick()">?</div>
-        <button id="toggle-dark-mode" onclick="toggleDarkMode()">다크 모드</button>
+        <!--        <button id="toggle-dark-mode">다크 모드</button>-->
     </header>
     <div class="page-nav">
         <a href="#">랜덤으로 이동 ↖</a>
@@ -39,16 +40,17 @@
             <ul id="results-list">
                 <li>인기 장소 1</li>
                 <li>인기 장소 2</li>
-                <li>인기 장소 3</li>
-                <li>인기 장소 4</li>
-                <li>인기 장소 5</li>
             </ul>
         </div>
     </div>
 </div>
 
-<script src="/js/map.js"></script>
-<script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapKey} + '&libraries=places&callback=initMap'" defer></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const googleMapKey = /*[[${googleMapKey}]]*/ '';
+    /*]]>*/
+</script>
+<script type="module" src="/js/map.js"></script>
 </body>
 
 </html>

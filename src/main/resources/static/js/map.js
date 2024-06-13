@@ -1,24 +1,43 @@
-let map;
-let markers = []; // 마커를 저장할 배열
+import {lightModeStyles, darkModeStyles} from './mapMode.js';
 
-function initMap() {
+let map;
+let markers = [];
+
+async function loadGoogleMapsApi() {
+    return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapKey}&libraries=places&callback=initMap`;
+        script.defer = true;
+        window.initMap = () => {
+            resolve();
+        };
+        document.head.appendChild(script);
+    });
+}
+
+async function initMap() {
+    await loadGoogleMapsApi();
+
+    const mapOptions = {
+        zoom: 17,
+        center: {lat: 0, lng: 0},
+        styles: lightModeStyles
+    };
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             const defaultLocation = {lat: lat, lng: lng};
-            const defaultZoom = 17;
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: defaultZoom,
-                center: defaultLocation
-            });
+            mapOptions.center = defaultLocation;
+            map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-            // 지도에 이벤트 리스너 추가
             map.addListener('click', hideResultsPanel);
             map.addListener('drag', hideResultsPanel);
         });
     } else {
         alert('Geolocation is not supported by this browser.');
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
     }
 }
 
@@ -35,7 +54,6 @@ function search() {
         fields: ['name', 'geometry']
     };
 
-    // 기존 마커 제거
     clearMarkers();
 
     service.textSearch(request, function (results, status) {
@@ -68,7 +86,7 @@ function createMarker(place) {
         position: place.geometry.location,
         title: place.name
     });
-    markers.push(marker); // 마커 배열에 추가
+    markers.push(marker);
 }
 
 function handleProfileClick() {
@@ -79,7 +97,7 @@ function showResultsPanel(results) {
     const resultsTitle = document.getElementById('results-title');
     resultsTitle.textContent = '검색 결과';
     const resultsList = document.getElementById('results-list');
-    resultsList.innerHTML = ''; // 기존 결과 초기화
+    resultsList.innerHTML = '';
 
     results.forEach(result => {
         const li = document.createElement('li');
@@ -111,8 +129,18 @@ function toggleDarkMode() {
     if (body.classList.contains('dark-mode')) {
         logo.src = '/images/pasture_logo_light.png';
         darkModeButton.textContent = '라이트 모드';
+        map.setOptions({styles: darkModeStyles});
     } else {
         logo.src = '/images/pasture_logo_dark.png';
         darkModeButton.textContent = '다크 모드';
+        map.setOptions({styles: lightModeStyles});
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('search-button').addEventListener('click', search);
+    document.getElementById('search-input').addEventListener('keydown', handleKeyDown);
+    // document.getElementById('toggle-dark-mode').addEventListener('click', toggleDarkMode);
+
+    initMap();
+});
