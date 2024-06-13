@@ -65,6 +65,7 @@ function search() {
                 createMarker(results[i]);
             }
             searchPerformed = true;
+            document.getElementById('close-results-button').style.display = 'block';
         }
     });
 }
@@ -110,11 +111,12 @@ function showResultsPanel(results) {
 
 function updateResultsPanel() {
     if (!searchPerformed) {
-        showPopularPlaces(); // 검색 전이면 인기 장소를 표시
+        showPopularPlaces();
     }
 }
 
 function showPopularPlaces() {
+    searchPerformed = false;
     const resultsTitle = document.getElementById('results-title');
     resultsTitle.textContent = '인기 장소';
     const resultsList = document.getElementById('results-list');
@@ -125,6 +127,22 @@ function showPopularPlaces() {
         <li>인기 장소 4</li>
         <li>인기 장소 5</li>
     `;
+    document.getElementById('close-results-button').style.display = 'none';
+}
+
+function moveToCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const currentLocation = {lat: lat, lng: lng};
+            map.setCenter(currentLocation);
+        }, function () {
+            alert('현재 위치를 가져올 수 없습니다.');
+        });
+    } else {
+        alert('이 브라우저에서는 Geolocation이 지원되지 않습니다.');
+    }
 }
 
 function toggleDarkMode() {
@@ -151,6 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('contact-link').addEventListener('click', () => {
         window.open('https://www.naver.com', '_blank');
     });
+    document.getElementById('current-location-button').addEventListener('click', moveToCurrentLocation);
+    document.getElementById('close-results-button').addEventListener('click', showPopularPlaces);
     window.addEventListener('beforeunload', () => {searchPerformed = false;});
     // document.getElementById('toggle-dark-mode').addEventListener('click', toggleDarkMode);
 
