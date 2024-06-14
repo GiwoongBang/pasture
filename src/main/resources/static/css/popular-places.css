@@ -1,0 +1,53 @@
+.random-nav {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.popular-places {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.popular-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.popular-row a {
+    flex: 1;
+    text-align: center;
+    color: darkgray;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.popular-row a span {
+    text-decoration: underline;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 2%;
+}
+
+.nav-buttons a {
+    color: darkgray;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 30px;
+}

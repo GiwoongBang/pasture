@@ -1,0 +1,167 @@
+/* Tablets and below (max-width: 1024px) */
+@media (max-width: 1024px) {
+    header {
+        align-items: flex-start;
+        padding: 10px 2%; /* Adjusted to have equal left and right padding */
+    }
+
+    .logo-container {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .logo img {
+        height: 24px; /* Adjusted height for logo in mobile */
+    }
+
+    .search-container {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    #autocomplete {
+        width: calc(100% - 20px);
+        font-size: 1em; /* Adjusted font size for mobile */
+    }
+
+    .random-nav {
+        font-size: 25px; /* Adjusted font size for mobile */
+        gap: 5px;
+    }
+
+    .random-nav a {
+        font-size: 0.9em; /* Adjusted font size for mobile */
+    }
+
+    .nav-buttons a {
+        font-size: 25px; /* Adjusted font size for mobile */
+    }
+
+    #current-location-button {
+        width: calc(100% - 20px);
+        padding: 10px;
+    }
+}
+
+/* iPhone, Galaxy, Pixel devices (max-width: 768px) */
+@media screen and (max-width: 768px) and (max-device-width: 768px) {
+    .popular-row a {
+        font-size: 0.7em; /* 70% of the original font size */
+    }
+
+    .nav-buttons a {
+        font-size: 0.7em; /* 70% of the original font size */
+    }
+}
+
+/* Laptops and small desktops (min-width: 1025px and max-width: 1366px) */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    header {
+        padding: 10px 2%; /* Adjusted to have equal left and right padding */
+    }
+
+    .logo-container {
+        justify-content: space-between;
+    }
+
+    .logo img {
+        height: 28px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .profile-icon {
+        margin-left: auto;
+    }
+
+    .random-nav {
+        font-size: 28px;
+        gap: 8px;
+    }
+
+    #autocomplete {
+        font-size: 1.1em;
+    }
+
+    #current-location-button {
+        width: 100%;
+        padding: 12px 24px;
+    }
+}
+
+/* Large desktops (min-width: 1367px and max-width: 1920px) */
+@media (min-width: 1367px) and (max-width: 1920px) {
+    header {
+        padding: 10px 2%; /* Adjusted to have equal left and right padding */
+    }
+
+    .logo-container {
+        justify-content: space-between;
+    }
+
+    .logo img {
+        height: 28px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .profile-icon {
+        margin-left: auto;
+    }
+
+    .random-nav {
+        font-size: 30px;
+        gap: 10px;
+    }
+
+    #autocomplete {
+        font-size: 1.1em;
+    }
+
+    #current-location-button {
+        width: 100%;
+        padding: 12px 24px;
+    }
+}
+
+/* Ultra-wide screens (min-width: 1921px) */
+@media (min-width: 1921px) {
+    header {
+        padding: 10px 2%; /* Adjusted to have equal left and right padding */
+    }
+
+    .logo-container {
+        justify-content: space-between;
+    }
+
+    .logo img {
+        height: 28px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .profile-icon {
+        margin-left: auto;
+    }
+
+    .random-nav {
+        font-size: 30px;
+        gap: 10px;
+    }
+
+    #autocomplete {
+        font-size: 1.1em;
+    }
+
+    #current-location-button {
+        width: 100%;
+        padding: 12px 24px;
+    }
+}

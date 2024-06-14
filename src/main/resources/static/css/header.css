@@ -1,0 +1,91 @@
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --border-color: #ccc;
+    --profile-icon-bg: #ccc;
+    --header-height: 150px; /* Define header height */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 2%; /* Ensure equal padding on both sides */
+    border-bottom: 1px solid var(--border-color);
+    gap: 1%;
+    position: fixed; /* Fixed position to keep the header at the top */
+    top: 0;
+    left: 0;
+    right: 0;
+    width: calc(100% - 4%); /* Adjust width to match container */
+    max-width: 100%; /* Set max-width to match the map */
+    margin: auto; /* Center align */
+    background-color: var(--background-color);
+    z-index: 1000; /* Ensure header is above other elements */
+}
+
+.logo-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 28px; /* Adjusted height for logo */
+    cursor: pointer;
+}
+
+.search-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+#autocomplete {
+    width: 100%;
+    padding: 11px; /* Adjusted padding */
+    border-radius: 10px;
+    border: 2px solid var(--text-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 1.1em; /* Adjusted font size */
+}
+
+.profile-icon {
+    width: 5vh; /* Adjusted size */
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: var(--profile-icon-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px; /* Adjusted font size */
+    color: white;
+    cursor: pointer;
+}
+
+/* 다크 모드 */
+body.dark-mode {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --border-color: #333333;
+    --profile-icon-bg: #555555;
+}
