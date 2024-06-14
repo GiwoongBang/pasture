@@ -4,45 +4,35 @@
 <head>
     <title>PASTURE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/popular-places.css">
     <link rel="stylesheet" href="/css/map.css">
+    <link rel="stylesheet" href="/css/media-queries.css">
 </head>
 
 <body>
 <div class="container">
 
     <header>
-        <a href="/" class="logo" id="logo-link"><img id="logo" src="/images/pasture_logo_dark.png" alt="PASTURE"></a>
+        <div class="logo-container">
+            <a href="/" class="logo" id="logo-link"><img id="logo" src="/images/pasture_logo_dark.png" alt="PASTURE"></a>
+            <div class="profile-icon" onclick="handleProfileClick()">?</div>
+        </div>
         <div class="search-container">
-            <input id="search-input" type="text" placeholder="장소 검색...">
-            <button id="search-button" onclick="search()">SEARCH</button>
+            <input id="autocomplete" type="text" placeholder="장소 검색...">
         </div>
-        <div class="profile-icon" onclick="handleProfileClick()">?</div>
-        <!--        <button id="toggle-dark-mode">다크 모드</button>-->
     </header>
-    <div class="page-nav">
-        <a href="#">랜덤으로 이동 ↖</a>
+    <div class="random-nav">
+        <div class="popular-places">
+            <!-- 인기 장소들이 여기 표시됨 -->
+        </div>
+        <div class="nav-buttons">
+            <a href="#" id="current-location-link">현재 위치로 이동 ↓</a>
+            <a href="#" id="random-link">랜덤으로 이동 ↔</a>
+        </div>
     </div>
-    <div class="content">
-        <div class="sidebar">
-            <ul>
-                <li><a href="/">홈으로 가기</a></li>
-                <li><a href="#" id="contact-link">문의하기</a></li>
-            </ul>
-        </div>
-        <div class="main-content">
-            <div id="map"></div>
-            <button id="current-location-button">현재 위치로 이동</button>
-        </div>
-        <div class="search-results" id="results-panel">
-            <div class="results-header">
-                <h3 id="results-title">인기 장소</h3>
-                <button id="close-results-button">X</button>
-            </div>
-            <ul id="results-list">
-                <li>인기 장소 1</li>
-                <li>인기 장소 2</li>
-            </ul>
-        </div>
+    <div class="main-content">
+        <div id="map"></div>
     </div>
 </div>
 

@@ -1,8 +1,11 @@
 import {lightModeStyles, darkModeStyles} from './mapMode.js';
 
 let map;
-let markers = [];
-let searchPerformed = false;
+let marker;
+
+const popularPlaces = [
+    '투썸 플레이스 서울대입구역점', '디뮤지엄 성수', '스타벅스 서울대입구역점', '따뜻한 우동 한그릇', '네형님', '무근본', '무신사 테라스 성수', '디뮤지엄 성수'
+];
 
 async function loadGoogleMapsApi() {
     return new Promise((resolve) => {
@@ -25,155 +28,124 @@ async function initMap() {
         styles: lightModeStyles
     };
 
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            const defaultLocation = {lat: lat, lng: lng};
-            mapOptions.center = defaultLocation;
-            map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-            map.addListener('click', hideResultsPanel);
-            map.addListener('drag', hideResultsPanel);
-        });
-    } else {
-        alert('Geolocation is not supported by this browser.');
-        map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    }
-}
-
-function search() {
-    const searchTerm = document.getElementById('search-input').value;
-    if (!searchTerm) {
-        alert("검색어를 입력해주세요.");
-        return;
-    }
-
-    const service = new google.maps.places.PlacesService(map);
-    const request = {
-        query: searchTerm,
-        fields: ['name', 'geometry']
-    };
-
-    clearMarkers();
-
-    service.textSearch(request, function (results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            map.setCenter(results[0].geometry.location);
-            showResultsPanel(results);
-            for (let i = 0; i < results.length; i++) {
-                createMarker(results[i]);
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+                map.setCenter(pos);
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: pos,
+                    title: "현재 위치"
+                });
+            },
+            () => {
+                handleLocationError(true, map.getCenter());
             }
-            searchPerformed = true;
-            document.getElementById('close-results-button').style.display = 'block';
+        );
+    } else {
+        handleLocationError(false, map.getCenter());
+    }
+
+    // Autocomplete 기능 추가
+    const input = document.getElementById('autocomplete');
+    const autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.bindTo('bounds', map);
+
+    autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) {
+            alert("No details available for input: '" + place.name + "'");
+            return;
         }
+
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);
+        }
+
+        if (marker) {
+            marker.setMap(null);
+        }
+
+        marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location,
+            title: place.name
+        });
+
+
+        input.addEventListener('click', () => {
+            input.value = ''; // 검색창을 클릭하면 초기화
+        });
     });
+
+
+    document.getElementById('current-location-link').addEventListener('click', moveToCurrentLocation);
+    displayPopularPlaces();
 }
 
-function clearMarkers() {
-    for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
+function moveToCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+                map.setCenter(pos);
+                if (marker) {
+                    marker.setMap(null);
+                }
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: pos,
+                    title: "현재 위치"
+                });
+            },
+            () => {
+                handleLocationError(true, map.getCenter());
+            }
+        );
+    } else {
+        handleLocationError(false, map.getCenter());
     }
-    markers = [];
 }
 
-function handleKeyDown(event) {
-    if (event.key === 'Enter') {
-        search();
+function handleLocationError(browserHasGeolocation, pos) {
+    alert(browserHasGeolocation ? "Error: The Geolocation service failed." : "Error: Your browser doesn't support geolocation.");
+}
+
+function displayPopularPlaces() {
+    const popularPlacesContainer = document.querySelector('.popular-places');
+    popularPlacesContainer.innerHTML = '';
+    for (let i = 0; i < popularPlaces.length; i += 4) {
+        const row = document.createElement('div');
+        row.classList.add('popular-row');
+        for (let j = i; j < i + 4 && j < popularPlaces.length; j++) {
+            const placeLink = document.createElement('a');
+            placeLink.href = '#';
+            const placeText = document.createElement('span');
+            placeText.textContent = popularPlaces[j];
+            placeLink.appendChild(placeText);
+            placeLink.innerHTML += " ↘";
+            row.appendChild(placeLink);
+        }
+        popularPlacesContainer.appendChild(row);
     }
-}
-
-function createMarker(place) {
-    const marker = new google.maps.Marker({
-        map: map,
-        position: place.geometry.location,
-        title: place.name
-    });
-    markers.push(marker);
 }
 
 function handleProfileClick() {
     alert('Profile clicked!');
 }
 
-function showResultsPanel(results) {
-    const resultsTitle = document.getElementById('results-title');
-    resultsTitle.textContent = '검색 결과';
-    const resultsList = document.getElementById('results-list');
-    resultsList.innerHTML = '';
-
-    results.forEach(result => {
-        const li = document.createElement('li');
-        li.textContent = result.name;
-        resultsList.appendChild(li);
-    });
-}
-
-function updateResultsPanel() {
-    if (!searchPerformed) {
-        showPopularPlaces();
-    }
-}
-
-function showPopularPlaces() {
-    searchPerformed = false;
-    const resultsTitle = document.getElementById('results-title');
-    resultsTitle.textContent = '인기 장소';
-    const resultsList = document.getElementById('results-list');
-    resultsList.innerHTML = `
-        <li>인기 장소 1</li>
-        <li>인기 장소 2</li>
-        <li>인기 장소 3</li>
-        <li>인기 장소 4</li>
-        <li>인기 장소 5</li>
-    `;
-    document.getElementById('close-results-button').style.display = 'none';
-}
-
-function moveToCurrentLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            const currentLocation = {lat: lat, lng: lng};
-            map.setCenter(currentLocation);
-        }, function () {
-            alert('현재 위치를 가져올 수 없습니다.');
-        });
-    } else {
-        alert('이 브라우저에서는 Geolocation이 지원되지 않습니다.');
-    }
-}
-
-function toggleDarkMode() {
-    const body = document.body;
-    const logo = document.querySelector('.logo img');
-    const darkModeButton = document.getElementById('toggle-dark-mode');
-
-    body.classList.toggle('dark-mode');
-
-    if (body.classList.contains('dark-mode')) {
-        logo.src = '/images/pasture_logo_light.png';
-        darkModeButton.textContent = '라이트 모드';
-        map.setOptions({styles: darkModeStyles});
-    } else {
-        logo.src = '/images/pasture_logo_dark.png';
-        darkModeButton.textContent = '다크 모드';
-        map.setOptions({styles: lightModeStyles});
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('search-button').addEventListener('click', search);
-    document.getElementById('search-input').addEventListener('keydown', handleKeyDown);
-    document.getElementById('contact-link').addEventListener('click', () => {
-        window.open('https://www.naver.com', '_blank');
-    });
-    document.getElementById('current-location-button').addEventListener('click', moveToCurrentLocation);
-    document.getElementById('close-results-button').addEventListener('click', showPopularPlaces);
-    window.addEventListener('beforeunload', () => {searchPerformed = false;});
-    // document.getElementById('toggle-dark-mode').addEventListener('click', toggleDarkMode);
-
     initMap();
-    showPopularPlaces();
 });
